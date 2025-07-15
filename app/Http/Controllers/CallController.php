@@ -20,15 +20,18 @@ class CallController extends Controller
             'type' => 'required|in:audio,video',
         ]);
 
-        $conversation = Conversation::findOrFail($request->conversation_id);
-        $this->authorize('view', $conversation);
+         $conversation = Conversation::with('users')->findOrFail($request->conversation_id); // 👈 users eager load করা হল
 
-        $call = $conversation->calls()->create([
-            'caller_id' => auth()->id(),
-            'type' => $request->type,
-            'status' => 'calling',
-        ]);
+    $call = $conversation->calls()->create([
+        'caller_id' => auth()->id(),
+        'conversation_id' => $request->conversation_id,
+        'type' => $request->type,
+        'status' => 'calling',
+    ]);
 
+    // এখানে call এর সাথে conversation attach করেই পাঠিয়ে দিচ্ছি
+    $call->load('conversation.users'); // 👈 conversation + users eager load
+ 
         broadcast(new CallStarted($call))->toOthers();
 
         return response()->json($call);
@@ -36,7 +39,6 @@ class CallController extends Controller
 
     public function answer(Call $call)
     {
-        $this->authorize('view', $call->conversation);
 
         $call->update([
             'status' => 'in-progress',
@@ -50,7 +52,6 @@ class CallController extends Controller
 
     public function end(Call $call)
     {
-        $this->authorize('view', $call->conversation);
 
         $call->update([
             'status' => 'completed',
@@ -72,7 +73,7 @@ class CallController extends Controller
         ]);
 
         $conversation = Conversation::findOrFail($request->conversation_id);
-        $this->authorize('view', $conversation);
+        // $this->authorize('view', $conversation);
 
         $targetUserId = $request->target_user_id ?? $conversation->users->where('id', '!=', auth()->id())->pluck('id')->first();
 

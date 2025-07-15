@@ -92,6 +92,8 @@
 @section('scripts')
 <script>
     const conversationId = {{ $conversation->id }};
+    console.log('conversation id: ' + conversationId);
+
     const userId = {{ auth()->id() }};
 </script>
 <script src="{{ asset('js/chat.js') }}"></script>

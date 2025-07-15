@@ -29,7 +29,7 @@ return [
     'servers' => [
         'messenger' => [
             'host' => env('REVERB_SERVER_HOST', '0.0.0.0'),
-            'port' => env('REVERB_SERVER_PORT', 8080),
+            'port' => env('REVERB_SERVER_PORT', 5173),
             'app_id' => env('REVERB_APP_ID', 'messenger'),
             'app_key' => env('REVERB_APP_KEY', 'messenger-key'),
             'app_secret' => env('REVERB_APP_SECRET', 'messenger-secret'),
@@ -40,7 +40,7 @@ return [
 
         'reverb' => [
             'host' => env('REVERB_SERVER_HOST', '0.0.0.0'),
-            'port' => env('REVERB_SERVER_PORT', 8080),
+            'port' => env('REVERB_SERVER_PORT', 5173),
             'path' => env('REVERB_SERVER_PATH', ''),
             'hostname' => env('REVERB_HOST'),
             'options' => [

@@ -7,6 +7,12 @@ use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
+
+Route::middleware(['auth'])->group(function () {
+    Broadcast::routes();
+});
+ 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -34,10 +40,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/calls/{call}/end', [CallController::class, 'end'])->name('calls.end');
 });
 
-// routes/channels.php
-Broadcast::channel('conversation.{conversationId}', function ($user, $conversationId) {
-    return $user->conversations->contains($conversationId);
-});
 
 // routes/web.php
 Route::post('/broadcast-signal', [CallController::class, 'broadcastSignal']);

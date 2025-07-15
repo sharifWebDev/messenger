@@ -31,9 +31,9 @@ class User extends Authenticatable
         'password',
     ];
     public function conversations()
-{
-    return $this->belongsToMany(Conversation::class)->withTimestamps();
-}
+    {
+        return $this->belongsToMany(Conversation::class)->withTimestamps();
+    }
 
 public function messages()
 {
@@ -45,7 +45,20 @@ public function calls()
     return $this->hasMany(Call::class, 'caller_id');
 }
 
+// Add to the User model
+public function unreadMessages()
+{
+    return $this->hasMany(Message::class, 'user_id')
+        ->whereNull('read_at')
+        ->where('user_id', '!=', $this->id);
+}
 
+public function hasUnreadMessages($conversationId)
+{
+    return $this->unreadMessages()
+        ->where('conversation_id', $conversationId)
+        ->exists();
+}
 
     /**
      * The attributes that should be hidden for serialization.

@@ -13,7 +13,7 @@
                         </button>
                     </div>
 
-                    <div class="card-body p-0">
+                    <div class="p-0 card-body">
                         <div class="list-group list-group-flush">
                             @foreach ($conversations as $conversation)
                                 <a href="{{ route('conversations.show', $conversation) }}"
@@ -38,11 +38,11 @@
                     </div>
                 </div>
 
-                <div class="card mt-3">
+                <div class="mt-3 card">
                     <div class="card-header">Suggested Contacts</div>
                     <div class="card-body">
                         @foreach ($suggestedContacts as $contact)
-                            <div class="d-flex align-items-center mb-2">
+                            <div class="mb-2 d-flex align-items-center">
                                 <div class="flex-grow-1">
                                     {{ $contact->name }}
                                 </div>
@@ -61,7 +61,7 @@
                     @include('conversations.show', ['conversation' => $activeConversation])
                 @else
                     <div class="card">
-                        <div class="card-body text-center py-5">
+                        <div class="py-5 text-center card-body">
                             <h4>Welcome to Messenger</h4>
                             <p class="text-muted">Select a conversation or start a new one</p>
                         </div>
@@ -96,6 +96,7 @@
         $(document).ready(function() {
             // Search users
             $('#searchContacts').on('input', function() {
+
                 const query = $(this).val();
                 if (query.length < 2) {
                     $('#searchResults').empty();

@@ -17,7 +17,9 @@ class MessageController extends Controller
         ]);
 
         $conversation = Conversation::findOrFail($request->conversation_id);
-        $this->authorize('view', $conversation);
+        if (!$conversation->users->contains(auth()->id())) {
+        abort(403);
+    }
 
         $message = $conversation->messages()->create([
             'user_id' => auth()->id(),

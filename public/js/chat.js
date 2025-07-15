@@ -4,15 +4,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const messageInput = messageForm.querySelector('input[name="body"]');
     const messagesContainer = document.querySelector('.conversation-messages');
 
-    // Initialize Echo
-    window.Echo = new Echo({
-        broadcaster: 'reverb',
-        key: 'messenger-key',
-        wsHost: window.location.hostname,
-        wsPort: 8080,
-        forceTLS: false,
-        enabledTransports: ['ws', 'wss'],
-    });
+    // // Initialize Echo
+    // window.Echo = new Echo({
+    //     broadcaster: 'pusher',
+    //     key: process.env.MIX_REVERB_APP_KEY,
+    //     wsScheme: window.location.protocol === 'https:' ? 'wss' : 'ws',
+    //     wsHost: process.env.MIX_REVERB_HOST,
+    //     wsPort: process.env.MIX_REVERB_PORT ?? 80,
+    //     wssPort: process.env.MIX_REVERB_PORT ?? 443,
+    //     forceTLS: (process.env.MIX_REVERB_SCHEME ?? 'https') === 'https',
+
+    //     enabledTransports: ['ws', 'wss'],
+    // });
+
 
     // Join conversation channel
     window.conversationChannel = window.Echo.join(`conversation.${conversationId}`)
@@ -44,13 +48,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         axios.post('/messages', {
             conversation_id: conversationId,
-            body: messageInput.value
+            body: messageInput.value 
         }).then(response => {
             messageInput.value = '';
+            console.log('✅ Message sent.');
         }).catch(error => {
-            console.error(error);
+            console.log(error);
         });
     });
+
 
     // Add message to chat
     function addMessageToChat(message) {
@@ -80,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }).then(response => {
             initializeCall(response.data, true);
         }).catch(error => {
-            console.error(error);
+            console.log(error);
         });
     }
 
@@ -110,14 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 initializeCall(response.data, false);
             })
             .catch(error => {
-                console.error(error);
-            });
-    }
-
-    function endCall(callId) {
-        axios.post(`/calls/${callId}/end`)
-            .catch(error => {
-                console.error(error);
+                 console.log(error);
             });
     }
 

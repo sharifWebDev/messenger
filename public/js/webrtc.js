@@ -31,6 +31,16 @@ function initializeCall(call, isCaller) {
     };
 }
 
+ function endCall(callId) {
+        axios.post(`/calls/${callId}/end`)
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                 console.log(error);
+            });
+    }
+
 class WebRTCCall {
     constructor(call, isCaller) {
         this.call = call;
