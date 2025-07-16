@@ -1,46 +1,24 @@
 import './bootstrap';
-import Echo from 'laravel-echo';
 
 
-import Pusher from 'pusher-js';
-window.Pusher = Pusher;
+// import Echo from 'laravel-echo';
 
-// window.Pusher = Pusher;
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     forceTLS: true
-// });
-
-
-// // Initialize Echo for WebSockets
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: import.meta.env.VITE_REVERB_APP_KEY,
-//     wsHost: import.meta.env.VITE_REVERB_HOST,
-//     wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
-//     wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
-//     forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
-//     disableStats: true,
+// const EchoInstance = new Echo({
+//     broadcaster: 'reverb',
+//     key: import.meta.env.VITE_REVERB_APP_KEY || 'messenger-key',
+//     wsHost: window.location.hostname,
+//     wsPort: import.meta.env.VITE_REVERB_PORT || 8080,
+//     forceTLS: (import.meta.env.VITE_REVERB_SCHEME || 'http') === 'https',
 //     enabledTransports: ['ws', 'wss'],
+//     cluster: import.meta.env.VITE_REVERB_CLUSTER || 'mt1', // ✅ This line is crucial
+//     authEndpoint: '/broadcasting/auth',
+//     reverb: {
+//         appId: import.meta.env.VITE_REVERB_APP_ID || 'messenger',
+//         appKey: import.meta.env.VITE_REVERB_APP_KEY || 'messenger-key',
+//     }
 // });
 
-
-const EchoInstance = new Echo({
-    broadcaster: 'pusher',
-    key: import.meta.env.VITE_REVERB_APP_KEY || 'messenger-key',
-    wsHost: window.location.hostname,
-    wsPort: import.meta.env.VITE_REVERB_PORT || 8080,
-    forceTLS: (import.meta.env.VITE_REVERB_SCHEME || 'http') === 'https',
-    enabledTransports: ['ws', 'wss'],
-    reverb: {
-        appId: import.meta.env.VITE_REVERB_APP_ID || 'messenger',
-        appKey: import.meta.env.VITE_REVERB_APP_KEY || 'messenger-key',
-    }
-});
-
-window.Echo = EchoInstance;
+// window.Echo = EchoInstance;
 
 // WebRTC Call Class
 class WebRTCCall {

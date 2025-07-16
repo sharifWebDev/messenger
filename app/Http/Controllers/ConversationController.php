@@ -42,7 +42,10 @@ class ConversationController extends Controller
         abort(403);
     }
 
+        // $messages = $conversation->messages()->with('user')->latest()->paginate(20);
+
         $messages = $conversation->messages()->with('user')->latest()->paginate(20);
+
 
         return view('conversations.show', compact('conversation', 'messages'));
     }

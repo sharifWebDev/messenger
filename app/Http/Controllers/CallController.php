@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\CallAnswered;
+use App\Models\Call;
 use App\Events\CallEnded;
 use App\Events\CallSignal;
 use App\Events\CallStarted;
-use App\Models\Call;
+use App\Events\CallAnswered;
 use App\Models\Conversation;
 use Illuminate\Http\Request;
+use App\Http\Resources\CallResource;
 
 class CallController extends Controller
 {
@@ -22,17 +23,19 @@ class CallController extends Controller
 
          $conversation = Conversation::with('users')->findOrFail($request->conversation_id); // 👈 users eager load করা হল
 
-    $call = $conversation->calls()->create([
-        'caller_id' => auth()->id(),
-        'conversation_id' => $request->conversation_id,
-        'type' => $request->type,
-        'status' => 'calling',
-    ]);
+        $call = $conversation->calls()->create([
+            'caller_id' => auth()->id(),
+            'conversation_id' => $request->conversation_id,
+            'type' => $request->type,
+            'status' => 'calling',
+        ]);
 
-    // এখানে call এর সাথে conversation attach করেই পাঠিয়ে দিচ্ছি
-    $call->load('conversation.users'); // 👈 conversation + users eager load
- 
+        $call->load('conversation.users');
+
         broadcast(new CallStarted($call))->toOthers();
+
+        //transfrom
+        $call = new CallResource($call);
 
         return response()->json($call);
     }
@@ -44,6 +47,8 @@ class CallController extends Controller
             'status' => 'in-progress',
             'started_at' => now(),
         ]);
+
+        $call->load('conversation.users');
 
         broadcast(new CallAnswered($call))->toOthers();
 
@@ -57,6 +62,8 @@ class CallController extends Controller
             'status' => 'completed',
             'ended_at' => now(),
         ]);
+
+        $call->load('conversation.users');
 
         broadcast(new CallEnded($call))->toOthers();
 

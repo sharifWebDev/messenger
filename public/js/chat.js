@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
     //     enabledTransports: ['ws', 'wss'],
     // });
 
-
     // Join conversation channel
     window.conversationChannel = window.Echo.join(`conversation.${conversationId}`)
         .here((users) => {
@@ -48,10 +47,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         axios.post('/messages', {
             conversation_id: conversationId,
-            body: messageInput.value 
+            body: messageInput.value
         }).then(response => {
             messageInput.value = '';
-            console.log('✅ Message sent.');
+            console.log('✅ Message sent.'+response.data);
+            addMessageToChat(response.data);
         }).catch(error => {
             console.log(error);
         });
@@ -60,15 +60,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add message to chat
     function addMessageToChat(message) {
+        console.log('📩 Message Received:', message);
         const messageElement = document.createElement('div');
         messageElement.className = `message ${message.user_id === userId ? 'sent' : 'received'}`;
         messageElement.innerHTML = `
-            <strong>${message.user.name}</strong>
+            <strong>${message.user_name}</strong>
             <p>${message.body}</p>
             <small>Just now</small>
         `;
         messagesContainer.prepend(messageElement);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        messagesContainer.scrollTop = messagesContainer.scrollTop;
     }
 
     // Initialize call buttons
@@ -84,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
             conversation_id: conversationId,
             type: type
         }).then(response => {
+            console.log('📞 Call started:', response.data);
             initializeCall(response.data, true);
         }).catch(error => {
             console.log(error);
@@ -94,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (call.caller_id === userId) return;
 
         document.getElementById('incomingCallType').textContent =
-            `${call.type} call from ${call.caller.name}`;
+            `${call.type} call from ${call.caller_name || 'Unknown User'}`;
 
         const incomingCallModal = new bootstrap.Modal(document.getElementById('incomingCallModal'));
         incomingCallModal.show();
@@ -113,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function answerCall(callId) {
         axios.post(`/calls/${callId}/answer`)
             .then(response => {
+                console.log('📞 Call received:', response.data);
                 initializeCall(response.data, false);
             })
             .catch(error => {

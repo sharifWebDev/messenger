@@ -2,6 +2,16 @@
 @extends('conversations.index')
 
 @section('conversation-content')
+
+<style>
+    .conversation-messages {
+    height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+</style>
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <span>{{ $conversation->name ?? $conversation->users->where('id', '!=', auth()->id())->pluck('name')->join(', ') }}</span>
@@ -15,7 +25,7 @@
         </div>
     </div>
 
-    <div class="card-body conversation-messages" style="height: 400px; overflow-y: auto;">
+    <div class="card-body conversation-messages" id="conversationMessages" style="height: 400px; overflow-y: auto;">
         @foreach($messages as $message)
             <div class="message @if($message->user_id == auth()->id()) sent @else received @endif">
                 <strong>{{ $message->user->name }}</strong>
@@ -24,6 +34,7 @@
             </div>
         @endforeach
     </div>
+
 
     <div class="card-footer">
         <form id="send-message-form">
@@ -95,6 +106,7 @@
     console.log('conversation id: ' + conversationId);
 
     const userId = {{ auth()->id() }};
+
 </script>
 <script src="{{ asset('js/chat.js') }}"></script>
 <script src="{{ asset('js/webrtc.js') }}"></script>

@@ -14,6 +14,17 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    {{--
+    <!-- Emoji picker -->
+<link href="https://cdn.jsdelivr.net/npm/@emoji-mart/css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emoji-mart/data"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emoji-mart/react"></script> --}}
+    {{--
+<!-- FilePond for file uploads -->
+<link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet">
+<script src="https://unpkg.com/filepond/dist/filepond.min.js"></script> --}}
+
+
     <!-- Toastr notifications -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
@@ -21,29 +32,25 @@
 </head>
 
 <body>
-    <style>
-    .collapse {
-        visibility: visible ! important;
-    }
-    </style>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="#">Messenger App wq</a>
+            <a class="navbar-brand" href="#">Messenger App</a>
 
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
-                    @if(auth()->check())
+                    @auth
                         <li class="nav-item">
                             <a class="nav-link active" href="#">
                                 <i class="fas fa-user-circle me-1"></i>
-                                {{ auth()->user()->name }}
+                                {{ Auth::user()->name }}
                             </a>
                         </li>
-                    @else
+                    @endauth
+                    @guest
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">Login</a>
                         </li>
-                    @endif
+                    @endguest
                 </ul>
             </div>
         </div>
@@ -65,7 +72,8 @@
     <!-- Laravel Echo -->
     <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.15.3/dist/echo.iife.js"></script>
 
-    {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script>  --}}
+    <!-- Pusher JS (required for Laravel Echo) -->
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
     <!-- jQuery (optional, but useful for AJAX) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -74,19 +82,18 @@
 
     <script src="https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js"></script>
 
+    <script>
+        window.Pusher = Pusher;
 
+        window.Echo = new Echo({
+            broadcaster: 'pusher',
+            key: "{{ config('broadcasting.connections.reverb.key') }}",
+            wsHost: "{{ config('broadcasting.connections.reverb.options.host') }}",
+            wsPort: {{ config('broadcasting.connections.reverb.options.port') }},
+            forceTLS: "{{ config('broadcasting.connections.reverb.options.scheme') }}" === 'https',
+            enabledTransports: ['ws', 'wss'],
+        });
 
-     <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.15.3/dist/echo.iife.js"></script>
-
-<script>
-    window.Echo = new Echo({
-        broadcaster: 'reverb',
-        key: "{{ config('broadcasting.connections.reverb.key') }}",
-        wsHost: "{{ config('broadcasting.connections.reverb.options.host') }}",
-        wsPort: {{ config('broadcasting.connections.reverb.options.port') }},
-        forceTLS: "{{ config('broadcasting.connections.reverb.options.scheme') }}" === 'https',
-        enabledTransports: ['ws', 'wss'],
-    });
 
         // Safe check for socketId
         function getSocketIdWhenReady(callback, attempt = 0) {
@@ -109,13 +116,18 @@
 
         // Use Echo after it's ready
         getSocketIdWhenReady((socketId) => {
-           window.Echo.connector.pusher.connection.bind('connected', () => {
+            window.Echo.connector.pusher.connection.bind('connected', () => {
                 console.log('✅ Echo connected with socketId:', window.Echo.socketId());
 
+                // let conversationId = "{{ auth()->user()->conversations->first()->id }}";
+                // window.Echo.private('chat.' + conversationId)
+                //     .listen('.message.sent', (e) => {
+                //         console.log('📩 Message Received:', e.message);
+                //         toastr.success('Message: ' + e.message);
+                //     });
             });
 
         });
-
     </script>
     @yield('scripts')
 </body>

@@ -155,6 +155,7 @@ class WebRTCCall {
                 }));
 
                 const answer = await this.peerConnection.createAnswer();
+                console.log('answer', answer);
                 await this.peerConnection.setLocalDescription(answer);
 
                 this.sendSignal({
@@ -169,8 +170,9 @@ class WebRTCCall {
             } else if (signal.type === 'candidate') {
                 await this.peerConnection.addIceCandidate(new RTCIceCandidate(signal.candidate));
             }
+            console.log('signal', signal);
         } catch (error) {
-            console.error('Error handling signal:', error);
+            console.log('Error handling signal:', error);
         }
     }
 
@@ -179,11 +181,11 @@ class WebRTCCall {
         // For this example, we'll broadcast it to all users in the conversation
         // (not ideal for production)
         axios.post('/broadcast-signal', {
-            conversation_id: this.call.conversation_id,
+            conversation_id: this.call.conversation.id,
             signal: signal,
             target_user_id: this.isCaller ? null : this.call.caller_id
         }).catch(error => {
-            console.error('Error sending signal:', error);
+            console.log('Error sending signal:', error);
         });
     }
 

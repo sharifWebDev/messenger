@@ -9,36 +9,13 @@ class BroadcastServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        // Authenticate the user's personal channel
+        // Register the broadcasting routes for private channels
         Broadcast::routes(['middleware' => ['web', 'auth']]);
 
-        // Register channel routes
+        // Load channel definitions
         require base_path('routes/channels.php');
-
-        // Configure Reverb if it's enabled
-        if (config('broadcasting.default') === 'reverb') {
-            $this->configureReverb();
-        }
-    }
-
-    /**
-     * Configure Reverb-specific broadcast settings
-     *
-     * @return void
-     */
-    protected function configureReverb()
-    {
-        Broadcast::extend('reverb', function ($app) {
-            return new \Laravel\Reverb\Broadcasting\Broadcaster(
-                $app['reverb.connection'],
-                $app['reverb.application'],
-                $app['reverb.channel_manager']
-            );
-        });
     }
 }
