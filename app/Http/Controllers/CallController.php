@@ -21,7 +21,7 @@ class CallController extends Controller
             'type' => 'required|in:audio,video',
         ]);
 
-         $conversation = Conversation::with('users')->findOrFail($request->conversation_id); // 👈 users eager load করা হল
+        $conversation = Conversation::with('users')->findOrFail($request->conversation_id); // 👈 users eager load করা হল
 
         $call = $conversation->calls()->create([
             'caller_id' => auth()->id(),

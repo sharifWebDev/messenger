@@ -39,14 +39,13 @@ class ConversationController extends Controller
     public function show(Conversation $conversation)
     {
         if (!$conversation->users->contains(auth()->id())) {
-        abort(403);
-    }
+            abort(403);
+        }
 
-        // $messages = $conversation->messages()->with('user')->latest()->paginate(20);
+        $conversations = auth()->user()->conversations()->with(['users', 'latestMessage'])->get();
 
         $messages = $conversation->messages()->with('user')->latest()->paginate(20);
 
-
-        return view('conversations.show', compact('conversation', 'messages'));
+        return view('conversations.show', compact('conversation',  'conversations', 'messages'));
     }
 }

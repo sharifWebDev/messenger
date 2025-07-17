@@ -9,7 +9,7 @@
 /* Base Styles */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa;
+    background-color: #cac5ac;
     color: #333;
 }
 
@@ -46,13 +46,12 @@ body {
 
 /* Message Area */
 .message-area {
-    height: calc(100vh - 200px);
+    height: calc(100vh - 100px);
     overflow-y: auto;
     background-color: #f0f2f5;
     padding: 1rem;
     display: flex;
     flex-direction: column-reverse;
-    /* Change to column-reverse to start from the bottom */
     justify-content: flex-end;
 
 }
@@ -67,14 +66,14 @@ body {
 
 .message.sent {
     align-self: flex-end;
-    background-color: #d9fdd3;
+    background-color: #a9d5b6;
     border-bottom-right-radius: 0.25rem;
     margin-left: auto;
 }
 
 .message.received {
     align-self: flex-start;
-    background-color: #ebbbbb;
+    background-color: #a6a1c1;
     border-bottom-left-radius: 0.25rem;
     box-shadow: 0 1px 0.5px rgba(0,0,0,0.1);
 }
@@ -191,4 +190,13 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
+}
+
+.card-header{
+    background-color: #f6f6f6;
+    color: #303030;
+    height: 60px !important;
+    align-items: center;
+    font-size: 16px ;
+    font-weight: bold;
 }

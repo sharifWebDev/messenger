@@ -25,10 +25,16 @@
     .collapse {
         visibility: visible ! important;
     }
+    .navbar {
+        height: 60px ! important;
+    }
     </style>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div id="app">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="#">Messenger App wq</a>
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-comments me-1 text-primary fs-4"></i>
+                Messenger App wq</a>
 
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
@@ -48,9 +54,9 @@
             </div>
         </div>
     </nav>
-
-    <div id="app" class="container mt-4">
-        @yield('content')
+        <div class="container mt-4">
+            @yield('content')
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -65,7 +71,7 @@
     <!-- Laravel Echo -->
     <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.15.3/dist/echo.iife.js"></script>
 
-    {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script>  --}}
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
     <!-- jQuery (optional, but useful for AJAX) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
