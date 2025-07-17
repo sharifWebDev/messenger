@@ -53,20 +53,20 @@
     </div>
 
     <!-- Call Modal -->
-    <div class="modal fade" id="callModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div id="callModal" class="modal fade">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="callModalTitle"></h5>
+                    <h5 id="callModalTitle" class="modal-title">Call</h5>
                 </div>
                 <div class="modal-body">
                     <div class="video-container">
-                        <video id="localVideo" autoplay muted></video>
-                        <video id="remoteVideo" autoplay></video>
+                        <video id="remoteVideo" autoplay playsinline></video>
+                        <video id="localVideo" autoplay playsinline muted></video>
                     </div>
                     <div class="call-controls">
                         <button id="endCallBtn" class="btn btn-danger">
-                            <i class="fas fa-phone-slash"></i> End Call
+                            <i class="fas fa-phone-slash"></i> End
                         </button>
                         <button id="toggleAudioBtn" class="btn btn-secondary">
                             <i class="fas fa-microphone"></i> Mute

@@ -75,7 +75,7 @@ body {
     align-self: flex-start;
     background-color: #a6a1c1;
     border-bottom-left-radius: 0.25rem;
-    box-shadow: 0 1px 0.5px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.1);
 }
 
 .message-time {
@@ -89,10 +89,9 @@ body {
 .video-container {
     position: relative;
     width: 100%;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    padding-bottom: 56.25%;
+    /* 16:9 aspect ratio */
     background: #000;
-    border-radius: 0.5rem;
-    overflow: hidden;
     margin-bottom: 1rem;
 }
 
@@ -113,7 +112,7 @@ body {
     height: 25%;
     object-fit: cover;
     border: 2px solid #fff;
-    border-radius: 0.25rem;
+    border-radius: 4px;
     z-index: 10;
 }
 
@@ -153,9 +152,17 @@ body {
 
 /* Animations */
 @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .incoming-call {
@@ -192,11 +199,30 @@ body {
     background: #a8a8a8;
 }
 
-.card-header{
+.card-header {
     background-color: #f6f6f6;
     color: #303030;
     height: 60px !important;
     align-items: center;
-    font-size: 16px ;
+    font-size: 16px;
     font-weight: bold;
+}
+
+
+.media-alert {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 4px;
+    z-index: 1000;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { bottom: -50px; opacity: 0; }
+    to { bottom: 20px; opacity: 1; }
 }
