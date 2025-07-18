@@ -150,6 +150,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 id="callModalTitle" class="modal-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Video container (shown for video calls) -->
@@ -199,10 +200,10 @@
                     <p id="incomingCallType" class="text-muted"></p>
                     <div class="mt-4 call-controls">
                         <button id="answerCallBtn" class="btn btn-success">
-                            <i class="fas fa-phone"></i>
+                            <i class="fas fa-phone"></i> Answer
                         </button>
                         <button id="rejectCallBtn" class="btn btn-danger">
-                            <i class="fas fa-phone-slash"></i>
+                            <i class="fas fa-phone-slash"></i> Reject
                         </button>
                     </div>
                 </div>

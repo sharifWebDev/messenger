@@ -40,13 +40,14 @@ return [
 
         'reverb' => [
             'host' => env('REVERB_SERVER_HOST', '0.0.0.0'),
-            'port' => env('REVERB_SERVER_PORT', 5173),
+            'port' => env('REVERB_SERVER_PORT', 8080),
             'path' => env('REVERB_SERVER_PATH', ''),
-            'hostname' => env('REVERB_HOST'),
+            'hostname' => env('REVERB_HOST', env('APP_URL')),
             'options' => [
-                'tls' => [],
+                'tls' => env('REVERB_TLS_ENABLED', false) ? [] : null,
             ],
-            'max_request_size' => env('REVERB_MAX_REQUEST_SIZE', 10_000),
+            'max_request_size' => env('REVERB_MAX_REQUEST_SIZE', 10000),
+            'max_message_size' => env('REVERB_APP_MAX_MESSAGE_SIZE', 65536),
             'scaling' => [
                 'enabled' => env('REVERB_SCALING_ENABLED', false),
                 'channel' => env('REVERB_SCALING_CHANNEL', 'reverb'),
@@ -77,28 +78,28 @@ return [
     |
     */
 
-    'apps' => [
-
+     'apps' => [
         'provider' => 'config',
 
         'apps' => [
             [
-                'key' => env('REVERB_APP_KEY'),
-                'secret' => env('REVERB_APP_SECRET'),
-                'app_id' => env('REVERB_APP_ID'),
+                'id' => env('REVERB_APP_ID', 'reverb'),
+                'name' => env('APP_NAME', 'Laravel'),
+                'key' => env('REVERB_APP_KEY', 'reverb-key'),
+                'secret' => env('REVERB_APP_SECRET', 'reverb-secret'),
+                'enable_client_messages' => true,
+                'max_message_size' => env('REVERB_APP_MAX_MESSAGE_SIZE', 10000),
+                'allowed_origins' => explode(',', env('REVERB_ALLOWED_ORIGINS', '*')),
+                'ping_interval' => env('REVERB_APP_PING_INTERVAL', 60),
+                'activity_timeout' => env('REVERB_APP_ACTIVITY_TIMEOUT', 30),
                 'options' => [
                     'host' => env('REVERB_HOST'),
                     'port' => env('REVERB_PORT', 443),
                     'scheme' => env('REVERB_SCHEME', 'https'),
                     'useTLS' => env('REVERB_SCHEME', 'https') === 'https',
                 ],
-                'allowed_origins' => ['*'],
-                'ping_interval' => env('REVERB_APP_PING_INTERVAL', 60),
-                'activity_timeout' => env('REVERB_APP_ACTIVITY_TIMEOUT', 30),
-                'max_message_size' => env('REVERB_APP_MAX_MESSAGE_SIZE', 10_000),
             ],
         ],
-
     ],
 
 ];

@@ -22,40 +22,43 @@
 
 <body>
     <style>
-    .collapse {
-        visibility: visible ! important;
-    }
-    .navbar {
-        height: 60px ! important;
-    }
+        .collapse {
+            visibility: visible ! important;
+        }
+
+        .navbar {
+            height: 60px ! important;
+        }
     </style>
     <div id="app">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-comments me-1 text-primary fs-4"></i>
-                Messenger App wq</a>
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-comments me-1 text-primary fs-4"></i>
+                    Messenger App</a>
 
-            <div class="collapse navbar-collapse justify-content-end">
-                <ul class="navbar-nav">
-                    @if(auth()->check())
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">
-                                <i class="fas fa-user-circle me-1"></i>
-                                {{ auth()->user()->name }}
-                            </a>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Login</a>
-                        </li>
-                    @endif
-                </ul>
+                <div class="collapse navbar-collapse justify-content-end">
+                    <ul class="navbar-nav">
+                        @if (auth()->check())
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">
+                                    <i class="fas fa-user-circle me-1"></i>
+                                    {{ auth()->user()->name }}
+                                </a>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">Login</a>
+                            </li>
+                        @endif
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
-        <div class="container mt-4">
-            @yield('content')
+        </nav>
+        <div class="justify-content-center align-items-center d-flex">
+            <div class="container px-0 mx-0 mt-1 mt-md-2 mt-lg-2">
+                @yield('content')
+            </div>
         </div>
     </div>
 
@@ -82,17 +85,17 @@
 
 
 
-     <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.15.3/dist/echo.iife.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.15.3/dist/echo.iife.js"></script>
 
-<script>
-    window.Echo = new Echo({
-        broadcaster: 'reverb',
-        key: "{{ config('broadcasting.connections.reverb.key') }}",
-        wsHost: "{{ config('broadcasting.connections.reverb.options.host') }}",
-        wsPort: {{ config('broadcasting.connections.reverb.options.port') }},
-        forceTLS: "{{ config('broadcasting.connections.reverb.options.scheme') }}" === 'https',
-        enabledTransports: ['ws', 'wss'],
-    });
+    <script>
+        window.Echo = new Echo({
+            broadcaster: 'reverb',
+            key: "{{ config('broadcasting.connections.reverb.key') }}",
+            wsHost: "{{ config('broadcasting.connections.reverb.options.host') }}",
+            wsPort: {{ config('broadcasting.connections.reverb.options.port') }},
+            forceTLS: "{{ config('broadcasting.connections.reverb.options.scheme') }}" === 'https',
+            enabledTransports: ['ws', 'wss'],
+        });
 
         // Safe check for socketId
         function getSocketIdWhenReady(callback, attempt = 0) {
@@ -115,13 +118,12 @@
 
         // Use Echo after it's ready
         getSocketIdWhenReady((socketId) => {
-           window.Echo.connector.pusher.connection.bind('connected', () => {
+            window.Echo.connector.pusher.connection.bind('connected', () => {
                 console.log('✅ Echo connected with socketId:', window.Echo.socketId());
 
             });
 
         });
-
     </script>
     @yield('scripts')
 </body>

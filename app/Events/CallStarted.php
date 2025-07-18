@@ -1,5 +1,5 @@
 <?php
-
+// App/Events/CallStarted.php
 namespace App\Events;
 
 use App\Models\Call;
@@ -26,11 +26,4 @@ class CallStarted implements ShouldBroadcast
     {
         return new PresenceChannel('conversation.'.$this->call->conversation_id);
     }
-}
-
-//     public function broadcastOn(): array
-//     {
-//         return [
-//             new PrivateChannel('channel-name'),
-//         ];
-//     }
+} 

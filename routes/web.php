@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\CallController;
-use App\Http\Controllers\ConversationController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\MessageController;
-use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CallController;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Broadcast;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ConversationController;
 
 
 Route::middleware(['auth'])->group(function () {
     Broadcast::routes();
 });
- 
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,6 +44,19 @@ Route::middleware(['auth'])->group(function () {
 
 // routes/web.php
 Route::post('/broadcast-signal', [CallController::class, 'broadcastSignal']);
+Route::post('/debug-log', [CallController::class, 'broadcastSignal']);
+
+// routes/api.php
+Route::middleware(['auth'])
+->post('/debug-log', function(Request $request) {
+    $logged = json_encode([
+        'user_id' => $request->user_id,
+        'conversation_id' => $request->conversation_id,
+        'message' => $request->message,
+        'timestamp' => $request->timestamp
+    ]);
+    return response()->json(['status' => 'logged']);
+});
 
 Route::middleware([
     'auth:sanctum',

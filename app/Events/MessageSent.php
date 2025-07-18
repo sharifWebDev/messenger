@@ -1,5 +1,5 @@
 <?php
-
+// App/Events/MessageSent.php
 namespace App\Events;
 
 use App\Models\Message;
@@ -29,20 +29,4 @@ class MessageSent implements ShouldBroadcast
     {
         return new PresenceChannel('conversation.' . $this->message->conversation_id);
     }
-
-    // /**
-    //  * Optional: alias for event name (frontend will listen for this)
-    //  */
-    // public function broadcastAs()
-    // {
-    //     return 'message.sent';
-    // }
-
-    // /**
-    //  * Data sent with the broadcast (as array)
-    //  */
-    // public function broadcastWith()
-    // {
-    //     return $this->message->toArray(request());
-    // }
 }
